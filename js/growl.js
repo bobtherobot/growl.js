@@ -1,0 +1,2 @@
+var Growl = (function() {
+})(this);
