@@ -77,7 +77,7 @@ var Growl = (function() {
   // Error messages
   var error = function(args) {
     if (typeof(args) === "string") {
-      show({message: args});
+      show({message: args, type: "error"});
     }
     else {
       show({
@@ -92,7 +92,7 @@ var Growl = (function() {
   // Warning messages
   var warn = function(args) {
     if (typeof(args) === "string") {
-      show({message: args});
+      show({message: args, type: "warn"});
     }
     else {
       show({
