@@ -57,4 +57,57 @@ var Growl = (function() {
     growlContainer = findOrCreateContainer();
     growlContainer.appendChild(growl);
   };
+
+  // Notice messages
+  var notice = function(args) {
+    // If args is a string, simple show a message with default arguments
+    if (typeof(args) === "string") {
+      show({message: args});
+    }
+    else {
+      show({
+        message: args.message,
+        title: args.title,
+        type: "notice",
+        timeout: args.timeout
+      });
+    }
+  };
+
+  // Error messages
+  var error = function(args) {
+    if (typeof(args) === "string") {
+      show({message: args});
+    }
+    else {
+      show({
+        message: args.message,
+        title: args.title,
+        type: "error",
+        timeout: args.timeout
+      });
+    }
+  };
+
+  // Warning messages
+  var warn = function(args) {
+    if (typeof(args) === "string") {
+      show({message: args});
+    }
+    else {
+      show({
+        message: args.message,
+        title: args.title,
+        type: "warn",
+        timeout: args.timeout
+      });
+    }
+  };
+
+  // Expose the functions we want to the world!
+  return {
+    Notice: notice,
+    Warn: warn,
+    Error: error
+  };
 })(this);
