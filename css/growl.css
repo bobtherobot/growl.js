@@ -1,0 +1,29 @@
+.growl {
+  width: 250px;
+  border-radius: 5px;
+  padding: 10px;
+  font-family: Verdana, "Times New Roman", Times, serif;
+  font-size: 0.8em;
+  margin-bottom: 5px;
+  border: 1px solid;
+}
+
+.growl strong.title {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.growl-notice {
+  border-color: #1dc635;
+  background-color: #4dd760;
+}
+
+.growl-error {
+  border-color: #c32222;
+  background-color: #f45454;
+}
+
+.growl-warn {
+  border-color: #d4bc37;
+  background-color: #ffe555;
+}
