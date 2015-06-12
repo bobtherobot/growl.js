@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Growl.js Demo | Very simple Growl notification messages for JavaScript</title>
+  <link rel="stylesheet" type="text/css" href="css/growl.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.css">
+  <style>
+  pre[class*=language-]>code[data-language] {
+    overflow: hidden!important;
+    max-height: 60em!important;
+  }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <h3>Simple version</h3>
+      </div>
+      <div class="col-xs-12">
+<pre>
+<code class="lang-javascript">
+// Notice
+Growl.Notice("Your message has been sent.");
+// Warning
+Growl.Warn("Your account will expire in 2 days.");
+// Error
+Growl.Error("You should login first.");</code>
+</pre>
+      </div>
+      <div class="col-xs-3">
+        <div class="form-group">
+          <input type="text" id="simple-version-message" placeholder="Type a message here" class="form-control" value="Your message has been sent">
+        </div>
+      </div>
+      <div class="col-xs-7">
+        <button class="btn btn-success" id="simple-notice-button">Notice message</button>
+        <button class="btn btn-warning" id="simple-warn-button">Warning message</button>
+        <button class="btn btn-danger" id="simple-error-button">Error message</button>
+      </div>
+      <div class="col-xs-12">
+        <h3>Not so complex version</h3>
+      </div>
+      <div class="col-xs-12">
+<pre>
+<code class="lang-javascript">
+// Notice
+Growl.Notice(
+  {
+    message: "Your message has been sent.", // The message to be shown
+    timeout: 5000, // Time before the message disappears, in ms,
+    title: "Congratulations" // Title of the message
+  }
+);
+// Warning
+Growl.Warn(
+  {
+    message: "Your account will expire in 2 days!", // The message to be shown
+    timeout: 5000, // Time before the message disappears, in ms,
+    title: "Attention" // Title of the message
+  }
+);
+// Error
+Growl.Error(
+  {
+    message: "You don't have permission to access this area!", // The message to be shown
+    timeout: 5000, // Time before the message disappears, in ms,
+    title: "Error" // Title of the message
+  }
+);</code>
+</pre>
+      </div>
+      <div class="col-xs-4">
+        <div class="form-group">
+          <label for="complex-version-message">Enter your message</label>
+          <input type="text" id="complex-version-message" placeholder="Type a message here" class="form-control" value="Your message has been sent">
+        </div>
+      </div>
+      <div class="col-xs-4">
+        <div class="form-group">
+          <label for="complex-version-time">Timeout (ms)</label>
+          <input type="number" id="complex-version-timeout" class="form-control" value="5000">
+        </div>
+      </div>
+      <div class="col-xs-4">
+        <div class="form-group">
+          <label for="complex-version-title">Enter title</label>
+          <input type="text" id="complex-version-title" placeholder="Type a title here" class="form-control" value="Message title">
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <button class="btn btn-success" id="complex-notice-button">Notice message</button>
+        <button class="btn btn-warning" id="complex-warn-button">Warning message</button>
+        <button class="btn btn-danger" id="complex-error-button">Error message</button>
+      </div>
+      <div class="col-xs-12">
+        <p style="margin-top: 30px;">
+          Enjoy!
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/growl.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js"></script>
+  <script>
+    $("#simple-notice-button").click(function(e) {
+      e.preventDefault();
+      var message = $("#simple-version-message").val();
+      if (!message) {
+        alert("You need to enter a message first!");
+        return;
+      }
+      Growl.Notice(message);
+    });
+    $("#simple-warn-button").click(function(e) {
+      e.preventDefault();
+      var message = $("#simple-version-message").val();
+      if (!message) {
+        alert("You need to enter a message first!");
+        return;
+      }
+      Growl.Warn(message);
+    });
+    $("#simple-error-button").click(function(e) {
+      e.preventDefault();
+      var message = $("#simple-version-message").val();
+      if (!message) {
+        alert("You need to enter a message first!");
+        return;
+      }
+      Growl.Error(message);
+    });
+
+    // Complex versions
+    $("#complex-notice-button").click(function(e) {
+      e.preventDefault();
+      var message = $("#complex-version-message").val(),
+          timeout = $("#complex-version-timeout").val(),
+          title = $("#complex-version-title").val();
+      if (!message) {
+        alert("You need to enter a message first!");
+        return;
+      }
+
+      if (!timeout || (timeout != +timeout)) {
+        alert("You need to enter a valid value for timeout");
+        return;
+      }
+
+      if (!title) {
+        alert("You need to enter a title first!");
+        return;
+      }
+
+      Growl.Notice({
+        message: message,
+        timeout: timeout,
+        title: title
+      });
+    });
+    $("#complex-warn-button").click(function(e) {
+      e.preventDefault();
+      var message = $("#complex-version-message").val(),
+          timeout = $("#complex-version-timeout").val(),
+          title = $("#complex-version-title").val();
+      if (!message) {
+        alert("You need to enter a message first!");
+        return;
+      }
+
+      if (!timeout || (timeout != +timeout)) {
+        alert("You need to enter a valid value for timeout");
+        return;
+      }
+
+      if (!title) {
+        alert("You need to enter a title first!");
+        return;
+      }
+
+      Growl.Warn({
+        message: message,
+        timeout: timeout,
+        title: title
+      });
+    });
+    $("#complex-error-button").click(function(e) {
+      e.preventDefault();
+      var message = $("#complex-version-message").val(),
+          timeout = $("#complex-version-timeout").val(),
+          title = $("#complex-version-title").val();
+      if (!message) {
+        alert("You need to enter a message first!");
+        return;
+      }
+
+      if (!timeout || (timeout != +timeout)) {
+        alert("You need to enter a valid value for timeout");
+        return;
+      }
+
+      if (!title) {
+        alert("You need to enter a title first!");
+        return;
+      }
+
+      Growl.Error({
+        message: message,
+        timeout: timeout,
+        title: title
+      });
+    });
+  </script>
+</body>
+</html>
