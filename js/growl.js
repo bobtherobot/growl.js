@@ -17,41 +17,81 @@ var Growl = (function() {
 
   // Main function which does the heavy lifting
   var show = function(args) {
-    var growl, message, title, growlContainer, timeoutHandle;
+    var growl, growlContainer, timeoutHandle, transLiveHandle, transOutHandle,
+        type, timeout, transin, transout;
 
     // Set default arguments, if they are missing
-    args.message = args.message || "";
-    args.type = args.type || "notice";
-    args.timeout = args.timeout || 2500;
+    type = args.type || "notice";
 
-    // Create the growl message
+	// Must parse integers to convert strings to numbers, 
+	// especially if the values come from a form.
+    timeout = parseInt(args.timeout) || 2500;
+	transin = parseInt(args.transin) || 220; // set to 0 to eliminate transition
+	transout = parseInt(args.transout) || 720; // set to 0 to eliminate transition
+	
+    // Create the growl wrapper
     growl = document.createElement("div");
-    message = document.createTextNode(args.message);
 
     // If there is a title specified, create it
-    if (args.title && typeof(args.title) === "string") {
-      title = document.createElement("strong");
-      title.className = "title";
+    if (args.title) {
+      var title = document.createElement("div");
+      title.className = "growl-title";
       title.appendChild(document.createTextNode(args.title));
-
       growl.appendChild(title);
     }
 
-    growl.appendChild(message); // Append the message to the element
-    growl.className = "growl growl-" + args.type; // Set the class for the growl message
+	// If there is a message specified, create it
+    if (args.message) {
+      var message = document.createElement("div");
+      message.className = "growl-message";
+      message.appendChild(document.createTextNode(args.message));
+      growl.appendChild(message);
+    }
+
+	// Set the transitions 
+	var s = growl.style; // to shorten the next line.
+	s.webkitTransition = s.mozTransition = s.transition = "all " + transin + "ms ease-in";
+	
+	// Set the classes, inlcuding the "begin"
+	growl.className = "growl growl-" + type + " growl-begin"; 
+    
+	// Store timeout handles so we can cancel them if / when user 
+	// clicks (and do general cleanup upon completion).
+	
+	// Wait until transition "in" time is complete before setting 
+	// the "live" class, thus allowing the transition to occur.
+	transLiveHandle = setTimeout(function() {
+	  // Essentially replacing the "begin" class with the "live" class.
+      growl.className = "growl growl-" + type + " growl-live"; 
+    }, transin);
+
+	// Set the "end" class at the user-defined "timeout".
+	transOutHandle = setTimeout(function() {
+	  // Essentially replacing the "live" class with the "end" class.
+      growl.className = "growl growl-" + type + " growl-end"; 
+    }, timeout);
 
     // Remove the element after some specified time.
-    // We store the timeoutHandle, since we need it later
     timeoutHandle = setTimeout(function() {
-      growl.parentNode.removeChild(growl);
-    }, args.timeout);
+      destroy(growl);
+    }, timeout + transout);
 
-    // If the growl message is clicked, remove it and clear the timeout function
-    growl.onclick = function() {
+    function destroy(elem){
+	  if (transLiveHandle) {
+        clearTimeout(transLiveHandle);
+      }
+      if (transOutHandle) {
+        clearTimeout(transOutHandle);
+      }
       if (timeoutHandle) {
         clearTimeout(timeoutHandle);
       }
-      growl.parentNode.removeChild(growl);
+      elem.parentNode.removeChild(elem);
+	}
+	
+    // If the growl message is clicked, remove it and clear the timeout function
+    growl.onclick = function() {
+      destroy(growl);
     };
 
     growlContainer = findOrCreateContainer();
